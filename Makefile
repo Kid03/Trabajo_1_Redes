@@ -2,9 +2,9 @@ CC=gcc
 CXX=g++
 RM=rm -f
 
-BIN=../echoClient
+BIN=TCPClient
 
-INCLUDES=-I../includes
+INCLUDES=
 LDFLAGS=
 LDLIBS=
 

@@ -9,10 +9,10 @@ const uint32_t RCVBUFSIZE = 32;    // Size of receive buffer
 int main(int argc, char *argv[]) {
 
 	checkArgs* argumentos = new checkArgs(argc, argv);
-	
-    std::string servAddress; 
+
+	std::string servAddress; 
 	uint16_t    ServPort;
-    std::string httpRequest;
+	std::string httpRequest;
 	std::string archivo;
 	
 	servAddress   = argumentos->getArgs().SERVER;
@@ -31,23 +31,21 @@ int main(int argc, char *argv[]) {
 		// Send the request to the server
 		sock.send(httpRequest.c_str(), requestLen);
 		char Buffer[RCVBUFSIZE + 1];    // Buffer for string + \0
-		uint32_t bytesReceived = 0;              // Bytes read on each recv()
+		uint32_t bytesReceived = 1;              // Bytes read on each recv()
 		uint32_t totalBytesReceived = 0;         // Total bytes read
 		
 		std::cout << "Received: " << std::endl;               // Setup to print the responce string
 		while (bytesReceived!=0) {
 			// Receive up to the buffer size bytes from the sender
-			if ((bytesReceived = (sock.recv(echoBuffer, RCVBUFSIZE))) < 0) {
+			if ((bytesReceived = (sock.recv(Buffer, RCVBUFSIZE))) < 0) {
 				std::cerr << "Unable to read";
 				fs.close () ;
 				exit(EXIT_FAILURE);
 			}
 			totalBytesReceived += bytesReceived;     // Keep tally of total bytes
-			echoBuffer[bytesReceived] = '\0';        // Terminate the string!
-			std::cout << echoBuffer ;                // Print the buffer
-			fs << echoBuffer << std::endl;           // Print on the file
+			Buffer[bytesReceived] = '\0';        // Terminate the string!
+			fs << Buffer << std::endl;           // Print on the file
 		}
-		std::cout << std::endl;
 		fs << std::endl;
 		fs.close ();
 
